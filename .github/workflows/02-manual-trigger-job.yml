@@ -19,7 +19,7 @@ jobs:
       run: |
           set -e  # Exit on error
           echo "Starting job creation..."
-          az ml job create --file src/job.yml --debug || {
+          az ml job create --file src/job.yml --resource-group azure_mlops --workspace-name MlOps --debug || {
             echo "Job creation failed"
             az ml job show-logs --name ${{ github.run_id }}
             exit 1
