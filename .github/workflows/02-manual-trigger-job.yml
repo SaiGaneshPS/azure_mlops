@@ -16,5 +16,12 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Trigger Azure Machine Learning job
-      run: az ml job create --file src/job.yml --debug
+      run: |
+          set -e  # Exit on error
+          echo "Starting job creation..."
+          az ml job create --file src/job.yml --debug || {
+            echo "Job creation failed"
+            az ml job show-logs --name ${{ github.run_id }}
+            exit 1
+          }
 
